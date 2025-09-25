@@ -11,8 +11,8 @@
 | Nombre Completo | Código | Rol            | Correo Electrónico        |
 | --------------- | ------ | -------------- | ------------------------- |
 | [Estudiante 1]  | 123456 | [Líder/Colab.] | [correo1@institucion.edu] |
-| David Santiago Peña Cotamo  | 2459611 | [Colaborador]  | pena.david@correounivalle.edu.co |
-| [Estudiante 3]  | 123458 | [Colaborador]  | [correo3@institucion.edu] |
+| David Santiago Peña Cotamo  | 202459611 | [Colaborador]  | pena.david@correounivalle.edu.co |
+| Nicolás González Bolaños  | 202459700 | [Colaborador]  | [nicolas.gonzalez.bolanos@correounivalle.edu.co] |
 
 ---
 
