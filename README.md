@@ -10,12 +10,13 @@
 
 | Nombre Completo | Código | Rol            | Correo Electrónico        |
 | --------------- | ------ | -------------- | ------------------------- |
-| [Estudiante 1]  | 123456 | [Líder/Colab.] | [correo1@institucion.edu] |
+| Camilo Andrés López Trejos  | 202459691 | [Líder] | camilo.trejos@correounivalle.edu.co |
 | David Santiago Peña Cotamo  | 202459611 | [Colaborador]  | pena.david@correounivalle.edu.co |
 | Nicolás González Bolaños  | 202459700 | [Colaborador]  | [nicolas.gonzalez.bolanos@correounivalle.edu.co] |
 
 ---
 
 ## 📌 Descripción de la Asignación
-
+<p align="justify">
 Este taller busca analizar el concepto de conjuntos difusos mediante la implementación de funciones en Scala bajo el paradigma de programación funcional. Los objetivos incluyen comprender la representación de conjuntos a través de funciones características, desarrollar operaciones como complemento, unión e intersección, y aplicar nociones de inclusión e igualdad en un contexto difuso. Además, se pretende reforzar el uso de funciones de alto orden, recursión y abstracción funcional, conceptos fundamentales en el curso de Fundamentos de Programación Funcional y Concurrente.
+</p>
