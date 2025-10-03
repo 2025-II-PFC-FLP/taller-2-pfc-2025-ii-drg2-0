@@ -44,14 +44,14 @@ class ConjuntosDifusos {
   }
   def inclusion(cd1: ConjDifuso, cd2: ConjDifuso): Boolean = {
     // cd1 y cd2 son Int => Double que devuelven un Boolean, esto indica si cd1 es subconjunto de cd2
-    @annotation.tailrec // Este verifica que la funcion recursica siguiente sea recursion de cola, si no lo es dará error
+    @annotation.tailrec // Este verifica que la funcion recursiva siguiente sea recursion de cola, si no lo es dará error
     def aux(n: Int): Boolean = { //Funcion interna toma entero y devuelve Booleanm
-      if (n > 1500) true //Caso base si todos los n están comprobados usamos 1500 como limite y no hubo fallo, devolvemos true
+      if (n > 1000) true //Caso base si todos los n están comprobados usamos 1000 como limite y no hubo fallo, devolvemos true
         //Es decir cd1 es subconjunto de cd2 para todos los n en este rango
       else if (cd1(n) > cd2(n)) false //Si en algun caso el grado de pertenencia de cd1 es mayor que cd2, cd1 no es subconjunto de cd2 y esta inclusion falla
       else aux(n + 1) //Si ninguna condicion se cumple superando el rango y que cd1 <= cd2, avanzamos al siguiente n, llamada en posicion de cola. Por eso el @teilrec es valido
     }
-    aux(0) //Verificacion desde 0 hasta 1500
+    aux(0) //Verificacion desde 0 hasta 1000
   }
   def igualdad(cd1: ConjDifuso, cd2: ConjDifuso): Boolean = {
     inclusion(cd1, cd2) && inclusion(cd2, cd1) //Condicion para saber si como conjuntos difusos son iguales cd1 y cd2.
