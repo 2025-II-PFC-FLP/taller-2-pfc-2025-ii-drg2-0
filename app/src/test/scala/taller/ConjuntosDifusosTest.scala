@@ -30,5 +30,16 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(approx(g(20), 1000.0/1331.0, eps)) // (20/22)^3
   }
 
+  // ---------- Tests para complemento ----------
+  test("Función complemento") {
+    val g = grande(1, 2)
+    val c = complemento(g)
+    assert(approx(c(1), 0.75, eps))    // 1 - 0.25
+    assert(approx(c(2), 5.0/9.0, eps)) // 1 - 4/9
+    assert(approx(c(3), 7.0/16.0, eps))
+    assert(approx(c(10), 21.0/121.0, eps))
+    assert(approx(c(0), 1.0, eps))     // 1 - 0
+  }
+
 
 
