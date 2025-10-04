@@ -53,5 +53,20 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(approx(u(10), 0.8264, 1e-3))
   }
 
+  // ---------- Tests para interseccion ----------
+  test("Función interseccion") {
+    val g1 = grande(1, 2)
+    val g2 = grande(2, 3)
+    val i = interseccion(g1, g2)
+    assert(approx(i(0), 0.0, eps))
+    assert(approx(i(1), 1.0/27.0, eps)) // min(0.25, 0.037)
+    assert(approx(i(2), 0.125, eps))
+    assert(approx(i(3), 0.296296, 1e-6))
+    assert(approx(i(20), 0.7513, 1e-3))
+  }
+
+
+
+
 
 
