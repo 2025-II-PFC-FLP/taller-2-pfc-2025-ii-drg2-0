@@ -41,5 +41,17 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(approx(c(0), 1.0, eps))     // 1 - 0
   }
 
+  // ---------- Tests para union ----------
+  test("Función union") {
+    val g1 = grande(1, 2)
+    val g2 = grande(2, 3)
+    val u = union(g1, g2)
+    assert(approx(u(0), 0.0, eps))
+    assert(approx(u(1), 0.25, eps))        // max(0.25, 0.037)
+    assert(approx(u(2), 0.4444, 1e-3))
+    assert(approx(u(3), 0.5625, eps))
+    assert(approx(u(10), 0.8264, 1e-3))
+  }
+
 
 
