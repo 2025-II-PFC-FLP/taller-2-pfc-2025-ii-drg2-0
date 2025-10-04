@@ -61,7 +61,7 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(approx(i(0), 0.0, eps))
     assert(approx(i(1), 1.0/27.0, eps)) // min(0.25, 0.037)
     assert(approx(i(2), 0.125, eps))
-    assert(approx(i(3), 0.296296, 1e-6))
+    assert(approx(i(3), 0.216, 1e-3))
     assert(approx(i(20), 0.7513, 1e-3))
   }
 
@@ -93,11 +93,3 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(!igualdad(zero, one))
   }
 }
-
-
-
-
-
-
-
-

@@ -6,18 +6,20 @@
  */
 
 plugins {
-    // Apply the scala Plugin to add support for Scala.
+    // Plugin de Scala → permite compilar y trabajar con código Scala
     id 'scala'
 
-    // Apply the application plugin to add support for building a CLI application in Java.
+    // Plugin para aplicaciones de línea de comando en Java/Scala
     id 'application'
-  
+
+    // Plugin de scalastyle para chequeo de estilo en Scala
     id("com.github.alisiikh.scalastyle") version "3.5.0"
 }
-//Aumentar la memoria de jvm a 1GB para las tareas build, run y test 
+
+// Configuración de memoria para compilación Scala y ejecución Java
 tasks.withType(ScalaCompile) {
     scalaCompileOptions.additionalParameters = [
-      "-J-Xmx2g",
+            "-J-Xmx2g",
     ]
 }
 
@@ -26,7 +28,7 @@ tasks.withType(JavaExec) {
 }
 
 tasks.withType(ScalaCompile) {
-    scalaCompileOptions.additionalParameters += ["-J-Xss8m","-J-Xmx2g"] 
+    scalaCompileOptions.additionalParameters += ["-J-Xss8m","-J-Xmx2g"]
 }
 
 tasks.withType(JavaExec) {
@@ -34,35 +36,49 @@ tasks.withType(JavaExec) {
 }
 
 repositories {
-    // Use Maven Central for resolving dependencies.
+    //Usamos Maven Central para todas las dependencias
     mavenCentral()
 }
 
 dependencies {
-    // Use Scala 2.13 in our library project
+    //Librería base de Scala 2.13
     implementation 'org.scala-lang:scala-library:2.13.11'
 
-    // This dependency is used by the application.
+    // Dependencias adicionales de tu proyecto
     implementation 'com.google.guava:guava:32.1.1-jre'
     implementation 'com.storm-enroute:scalameter-core_2.13:0.21'
     implementation group: 'org.scala-lang.modules', name: 'scala-parallel-collections_2.13', version: '1.0.4'
-    // Use Scalatest for testing our library
-    testImplementation 'junit:junit:4.13.2'
-    testImplementation 'org.scalatest:scalatest_2.13:3.2.16'
-    testImplementation 'org.scalatestplus:junit-4-13_2.13:3.2.2.0'
 
-    // Need scala-xml at test runtime
+    //TESTING
+    //ScalaTest puro
+    testImplementation 'org.scalatest:scalatest_2.13:3.2.16'
+
+    //Runtime necesario para algunas funcionalidades de ScalaTest
     testRuntimeOnly 'org.scala-lang.modules:scala-xml_2.13:1.2.0'
+
+    // ⭐ ADAPTADOR para que ScalaTest funcione con JUnit Platform (ESTO FALTABA)
+    testImplementation 'co.helmethair:scalatest-junit-runner:0.2.0'
 }
 
-// Apply a specific Java toolchain to ease working on different environments.
 java {
+    //Aplicamos Java 17 como toolchain (compatibilidad)
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
 application {
-    // Define the main class for the application.
+    //Clase principal de la aplicación
     mainClass = 'taller.App'
+}
+
+//Configuración de Gradle para ejecutar ScalaTest correctamente
+tasks.withType(Test) {
+    useJUnitPlatform {
+        includeEngines 'scalatest'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "full"
+    }
 }
