@@ -78,6 +78,23 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(inclusion(g1, g1))     // un conjunto siempre se incluye en sí mismo
   }
 
+  // ---------- Tests para igualdad ----------
+  test("Función igualdad") {
+    val g1 = grande(1, 2)
+    val g2 = grande(2, 3)
+    val g3 = grande(1, 2)
+    val zero: ConjDifuso = (_: Int) => 0.0
+    val one: ConjDifuso = (_: Int) => 1.0
+
+    assert(igualdad(g1, g3))   // mismo conjunto
+    assert(!igualdad(g1, g2))  // distintos
+    assert(igualdad(zero, zero))
+    assert(igualdad(one, one))
+    assert(!igualdad(zero, one))
+  }
+}
+
+
 
 
 
