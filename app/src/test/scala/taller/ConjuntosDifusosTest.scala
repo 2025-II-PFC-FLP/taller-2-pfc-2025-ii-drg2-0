@@ -65,6 +65,20 @@ class ConjuntosDifusosTest extends AnyFunSuite {
     assert(approx(i(20), 0.7513, 1e-3))
   }
 
+  // ---------- Tests para inclusion ----------
+  test("Función inclusion") {
+    val g1 = grande(1, 2)
+    val g2 = grande(2, 3)
+    assert(!inclusion(g1, g2)) // g1 no está incluido en g2
+    assert(inclusion(g2, g1))  // g2 sí está incluido en g1
+    val zero: ConjDifuso = (_: Int) => 0.0
+    val one: ConjDifuso = (_: Int) => 1.0
+    assert(inclusion(zero, one))  // 0 siempre <= 1
+    assert(!inclusion(one, zero)) // 1 <= 0? falso
+    assert(inclusion(g1, g1))     // un conjunto siempre se incluye en sí mismo
+  }
+
+
 
 
 
