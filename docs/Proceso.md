@@ -110,10 +110,10 @@ g(5)   // (5/(5+5))^2 = (0.5)^2 = 0.25
 g(10)  // (10/(10+5))^2 = (2/3)^2 ≈ 0.444...
 ```
 `def complemento(c: ConjDifuso): ConjDifuso`
-- Devuelve la funcion complemento 
-$$
+- Devuelve la funcion complemento
+  $$
   \mu_{\neg C}(n) = 1 - \mu_C(n)
-$$
+  $$
 - Antes de restar, aplica clamp a [0,1] y corrige `NaN/Infinite`
 
 ### Ejemplo 
@@ -124,10 +124,10 @@ comp(12) // 1 - 0.8 = 0.2
 comp(5)  // 1 - 0.2 = 0.8
 ```
 `def union(cd1: ConjDifuso, cd2: ConjDifuso, cd3: ConjDifuso): ConjDifuso`
-- Union difusa estandar por maximo: 
-$$
+- Union difusa estandar por maximo:
+  $$
   \mu_{A \cup B}(n) = \max(\mu_A(n), \mu_B(n))
-$$
+  $$
 
 ### Ejemplo
 ```Scala
@@ -136,7 +136,8 @@ i(6) // min(0.7,0.2) = 0.2
 ```
 `def inclusion(cd1: ConjDifuso, cd2: ConjDifuso): Boolean`
 - Determina si `cd1` esta incluido en `cd2` es decir, para todo `n` en el dominio 
-considerado $$
+considerado
+  $$
   \mu_{A \cap B}(n) = \min(\mu_A(n), \mu_B(n))
   $$
 - Implementacion practica: recorre `n` desde `0` hasta `1000` (limite fijado) con una
@@ -212,7 +213,9 @@ sequenceDiagram
     Aux->>Main: si n>1000 return true
 ```
 ## Notacion matematica 
-- Función de pertenencia:$$\mu_C: \mathbb{Z} \to [0,1]$$
+- Función de pertenencia: $$
+  \mu_C : \mathbb{Z} \to [0, 1]
+  $$
 - Complemento: $$\mu_{\neg C}(n) = 1 - \mu_C(n)$$
 - Unión: $$\mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))$$
 - Intersección: $$\mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))$$
