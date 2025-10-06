@@ -1,4 +1,4 @@
-# Ejemplo informe de corrección
+++0# Ejemplo informe de corrección
 
 **Fundamentos de Programación Funcional y Concurrente**  
 Documento realizado por el docente Juan Francisco Díaz.
