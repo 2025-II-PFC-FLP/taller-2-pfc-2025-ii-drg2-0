@@ -82,4 +82,137 @@ val cd = (n: Int) => if (n >= 10) 1.0 else 0.0
 pertenece(12, cd) // 1.0
 pertenece(5, cd)  // 0.0
 ```
+`def grande (d: Int, e: Int): ConjDifuso `
+- Crea un conjunto difuso que modela "ser grande" parametrizando por `d` y `e`
+- Precondiciones: `d >= 1` y `e >= 1` (verificadascon `requiere`)
+- Para un `n` dado:-
+   - Si `n <= 0` → retorna 0.0
+   - Calcula `form1 = n/(n+d)` (en `Double`)
+   - Calcula `form2 = (form1)^e`
+   - Aplica clamp a [0,1] y maneja `NaN` devolviendo `0.0` si corresponde 
 
+## Formula (LaTeX):
+
+$$
+\mu_{\text{grande}}(n) =
+\begin{cases}
+0 & n \le 0\\[4pt]
+\operatorname{clamp}\Big(\big(\tfrac{n}{\,n+d\,}\big)^e,\,0,\,1\Big) & n>0
+\end{cases}
+$$
+
+### Ejemplo
+```Scala
+val g = new ConjuntosDifusos().grande(5, 2)
+g(0)   // 0.0
+g(5)   // (5/(5+5))^2 = (0.5)^2 = 0.25
+g(10)  // (10/(10+5))^2 = (2/3)^2 ≈ 0.444...
+```
+`def complemento(c: ConjDifuso): ConjDifuso`
+- Devuelve la funcion complemento 
+$$
+  \mu_{\neg C}(n) = 1 - \mu_C(n)
+$$
+- Antes de restar, aplica clamp a [0,1] y corrige `NaN/Infinite`
+
+### Ejemplo 
+```Scala
+val c = (n:Int) => if (n>=10) 0.8 else 0.2
+val comp = new ConjuntosDifusos().complemento(c)
+comp(12) // 1 - 0.8 = 0.2
+comp(5)  // 1 - 0.2 = 0.8
+```
+`def union(cd1: ConjDifuso, cd2: ConjDifuso, cd3: ConjDifuso): ConjDifuso`
+- Union difusa estandar por maximo: 
+$$
+  \mu_{A \cup B}(n) = \max(\mu_A(n), \mu_B(n))
+$$
+
+### Ejemplo
+```Scala
+val i = new ConjuntosDifusos().interseccion(a,b)
+i(6) // min(0.7,0.2) = 0.2
+```
+`def inclusion(cd1: ConjDifuso, cd2: ConjDifuso): Boolean`
+- Determina si `cd1` esta incluido en `cd2` es decir, para todo `n` en el dominio 
+considerado $$
+  \mu_{A \cap B}(n) = \min(\mu_A(n), \mu_B(n))
+  $$
+- Implementacion practica: recorre `n` desde `0` hasta `1000` (limite fijado) con una
+funcion recursiva de cola `aux`
+    - Si encuentra `cd1(n) > cd2(n)` devuelve `falsa`
+    - Si supera `1000` sin violaciones, devuelve `true`
+- Uso de `@annotation.tailrec` garantiza que `aux` sea recursiva de cola (si no lo fuera, el compilador fallaria)
+
+### Ejemplo conceptual 
+```Scala
+val cd1 = (n:Int) => if (n>5) 0.5 else 0.1
+val cd2 = (n:Int) => if (n>5) 0.6 else 0.2
+inclusion(cd1, cd2) // true (en el rango 0..1000)
+```
+### Observaciones
+- El limite `1000` es una decision practica (evita infinitas comprobaciones en ℤ)
+- Si las funciones devuelven `NaN`, la comparacion puede comportarse de forma inesperada
+
+`def igualdad(cd1: ConjDifuso, cd2: ConjDifuso): Boolean`
+- Define igualdad como inclusion mutua:
+```Scala
+inclusion(cd1, cd2) && inclusion(cd2, cd1)
+```
+- Es una comparacion en el dominio discretizado `0..1000`
+### Ejemplo uso completo
+```Scala
+val cds = new ConjuntosDifusos()
+
+val g1 = cds.grande(5, 2)        // conj. "grande" parametrizado
+val g2 = cds.grande(3, 1)
+
+println(cds.pertenece(10, g1))  // grado de pertenencia en g1
+println(cds.pertenece(10, g2))
+
+val compG1 = cds.complemento(g1)
+println(compG1(10))             // 1 - mu_g1(10)
+
+val u = cds.union(g1, g2)
+val inter = cds.interseccion(g1, g2)
+
+println(cds.inclusion(g2, g1))  // boolean
+println(cds.igualdad(g1, g2))   // boolean
+```
+### Ejecucion paso a paso (ejemplo: grande(5,2)(n=10))
+1. `grande(5,2)` crea la funcion anonima 
+2. Evaluamos con `n=10`:
+    - `form1 = 10 / (10 + 5) = 10/15 = 2/3 ≈ 0.6667`
+    - `form2 = (2/3)^2 ≈ 0.4444`
+    - Clamp a ([0,1]→0.4444` (ya está en rango)
+3. Resultado final:≈ 0.4444
+
+## Diagrama en llamadas (Mermaid)
+### Diagrama: evaluacion de `grande(d,e)` y `pertenece`
+``` mermaid
+sequenceDiagram
+participant Caller as Código cliente
+participant CDS as ConjuntosDifusos
+participant Func as función mu(n)
+
+    Caller->>CDS: grande(5,2)
+    CDS-->>Caller: retorna func(n)
+    Caller->>Func: func(10)
+    Func-->>Caller: calcula form1, form2 y retorna 0.4444
+```
+### Diagrama: comprobación inclusion(cd1, cd2) (recursión de cola)
+``` mermaid
+sequenceDiagram
+    participant Main as inclusion(cd1,cd2)
+    participant Aux as aux(0..1000)
+    Main->>Aux: aux(0)
+    Aux->>Aux: comprueba cd1(0) <= cd2(0) ? aux(1) : return false
+    Aux->>Aux: ...
+    Aux->>Main: si n>1000 return true
+```
+## Notacion matematica 
+- Función de pertenencia:$$\mu_C: \mathbb{Z} \to [0,1]$$
+- Complemento: $$\mu_{\neg C}(n) = 1 - \mu_C(n)$$
+- Unión: $$\mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))$$
+- Intersección: $$\mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))$$
+- Inclusión (práctica en 0..1000): $$(A \subseteq B \iff \forall n \in \{0,\dots,1000\},\ \mu_A(n) \le \mu_B(n)$$
