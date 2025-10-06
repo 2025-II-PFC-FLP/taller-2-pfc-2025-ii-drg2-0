@@ -229,13 +229,14 @@ $$
 $$
   \mu_{\neg C}(n) = 1 - \mu_C(n)
 $$
+
 -Unión: 
 
 $$
   \mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))
 $$ 
 
-- Intersección:  Hola
+- Intersección:  Holaa
 
 $$
   \mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))
@@ -246,6 +247,7 @@ $$
 $$
   (A \subseteq B \iff \forall n \in \{0,\dots,1000\},\ \mu_A(n) \le \mu_B(n)
 $$
+
 ---
 #  Pruebas del Algoritmo de Conjuntos Difusos
 
