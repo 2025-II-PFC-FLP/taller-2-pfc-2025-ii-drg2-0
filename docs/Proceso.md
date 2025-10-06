@@ -236,7 +236,7 @@ $$
   \mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))
 $$ 
 
-- Intersección:  Holaa
+- Intersección:
 
 $$
   \mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))
