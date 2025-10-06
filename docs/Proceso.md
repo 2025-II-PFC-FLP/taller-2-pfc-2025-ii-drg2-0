@@ -96,10 +96,11 @@ pertenece(5, cd)  // 0.0
 $$
 \mu_{\text{grande}}(n) =
 \begin{cases}
-0 & n \le 0\\[4pt]
-\operatorname{clamp}\Big(\big(\tfrac{n}{\,n+d\,}\big)^e,\,0,\,1\Big) & n>0
+0, & n \le 0 \\[4pt]
+\text{clamp}\left[\left(\dfrac{n}{n+d}\right)^e, 0, 1\right], & n > 0
 \end{cases}
 $$
+
 
 ### Ejemplo
 ```Scala
