@@ -111,9 +111,11 @@ g(10)  // (10/(10+5))^2 = (2/3)^2 ≈ 0.444...
 ```
 `def complemento(c: ConjDifuso): ConjDifuso`
 - Devuelve la funcion complemento
-  $$
+
+$$
   \mu_{\neg C}(n) = 1 - \mu_C(n)
-  $$
+$$
+
 - Antes de restar, aplica clamp a [0,1] y corrige `NaN/Infinite`
 
 ### Ejemplo 
@@ -125,9 +127,10 @@ comp(5)  // 1 - 0.2 = 0.8
 ```
 `def union(cd1: ConjDifuso, cd2: ConjDifuso, cd3: ConjDifuso): ConjDifuso`
 - Union difusa estandar por maximo:
-  $$
-  \mu_{A \cup B}(n) = \max(\mu_A(n), \mu_B(n))
-  $$
+
+$$
+ \mu_{A \cup B}(n) = \max(\mu_A(n), \mu_B(n))
+$$
 
 ### Ejemplo
 ```Scala
@@ -137,9 +140,11 @@ i(6) // min(0.7,0.2) = 0.2
 `def inclusion(cd1: ConjDifuso, cd2: ConjDifuso): Boolean`
 - Determina si `cd1` esta incluido en `cd2` es decir, para todo `n` en el dominio 
 considerado
-  $$
+
+$$
   \mu_{A \cap B}(n) = \min(\mu_A(n), \mu_B(n))
-  $$
+$$
+
 - Implementacion practica: recorre `n` desde `0` hasta `1000` (limite fijado) con una
 funcion recursiva de cola `aux`
     - Si encuentra `cd1(n) > cd2(n)` devuelve `falsa`
@@ -213,13 +218,34 @@ sequenceDiagram
     Aux->>Main: si n>1000 return true
 ```
 ## Notacion matematica 
-- Función de pertenencia: $$
+- Función de pertenencia:
+
+$$
   \mu_C : \mathbb{Z} \to [0, 1]
-  $$
-- Complemento: $$\mu_{\neg C}(n) = 1 - \mu_C(n)$$
-- Unión: $$\mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))$$
-- Intersección: $$\mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))$$
-- Inclusión (práctica en 0..1000): $$(A \subseteq B \iff \forall n \in \{0,\dots,1000\},\ \mu_A(n) \le \mu_B(n)$$
+$$
+
+- Complemento: 
+
+$$
+  \mu_{\neg C}(n) = 1 - \mu_C(n)
+$$
+-Unión: 
+
+$$
+  \mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))
+$$ 
+
+- Intersección:  Hola
+
+$$
+  \mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))
+$$
+
+- Inclusión (práctica en 0..1000): 
+
+$$
+  (A \subseteq B \iff \forall n \in \{0,\dots,1000\},\ \mu_A(n) \le \mu_B(n)
+$$
 ---
 #  Pruebas del Algoritmo de Conjuntos Difusos
 
