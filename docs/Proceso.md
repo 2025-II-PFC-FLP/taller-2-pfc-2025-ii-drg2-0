@@ -230,7 +230,7 @@ $$
   \mu_{\neg C}(n) = 1 - \mu_C(n)
 $$
 
--Unión: 
+- Unión: 
 
 $$
   \mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))
