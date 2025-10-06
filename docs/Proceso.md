@@ -216,3 +216,145 @@ sequenceDiagram
 - Unión: $$\mu_{A\cup B}(n) = \max(\mu_A(n), \mu_B(n))$$
 - Intersección: $$\mu_{A\cap B}(n) = \min(\mu_A(n), \mu_B(n))$$
 - Inclusión (práctica en 0..1000): $$(A \subseteq B \iff \forall n \in \{0,\dots,1000\},\ \mu_A(n) \le \mu_B(n)$$
+---
+#  Pruebas del Algoritmo de Conjuntos Difusos
+
+A continuación se presentan los **tests unitarios** realizados al módulo `ConjuntosDifusos`, desarrollados con **ScalaTest**.  
+Cada grupo de pruebas valida una de las operaciones definidas para los conjuntos difusos, comprobando la corrección de los resultados numéricos dentro de una tolerancia `ε = 1×10⁻⁶`.
+
+##  1. Función `grande(d, e)`
+
+Evalúa el comportamiento del grado de pertenencia de un conjunto difuso que modela la noción de “ser grande”, con parámetros `d` y `e`.
+
+Se espera que:
+- Los valores crezcan progresivamente.
+- Cumplan la fórmula de definición de la función de pertenencia:
+
+$$
+\mu_{grande}(n) = \left( \frac{n}{n + d} \right)^e
+$$
+
+###  Test 1: `grande(1, 2)`
+Verifica varios valores de \( n \) para confirmar la forma cuadrática del crecimiento:
+
+| n | Esperado | Cálculo |
+|:-:|:-:|:-:|
+| 0 | 0.0 | (0/1)² |
+| 1 | 0.25 | (1/2)² |
+| 2 | 0.4444 | (2/3)² |
+| 3 | 0.5625 | (3/4)² |
+| 10 | 0.8264 | (10/11)² |
+
+###  Test 2: `grande(2, 3)`
+Evalúa la versión cúbica de la función:
+
+| n | Esperado | Cálculo |
+|:-:|:-:|:-:|
+| 0 | 0.0 | (0/2)³ |
+| 1 | 0.037 | (1/3)³ |
+| 2 | 0.125 | (2/4)³ |
+| 4 | 0.296 | (4/6)³ |
+| 20 | 0.751 | (20/22)³ |
+
+
+
+## 2. Función `complemento`
+
+Comprueba la correcta implementación de:
+
+$$
+\mu_{\neg C}(n) = 1 - \mu_C(n)
+$$
+
+Se espera que los valores sean **inversos** a los de la función `grande`.  
+Ejemplo: si \( \mu_C(2) = 4/9 \), entonces \( \mu_{\neg C}(2) = 5/9 \).
+
+| n | Resultado esperado | Justificación |
+|:-:|:-:|:-:|
+| 1 | 0.75 | 1 − 0.25 |
+| 2 | 0.555... | 1 − 4/9 |
+| 3 | 0.4375 | 1 − 9/16 |
+| 10 | 0.1736 | 1 − 100/121 |
+| 0 | 1.0 | 1 − 0 |
+
+
+
+## 3. Función `union`
+
+Evalúa que la unión cumpla:
+
+$$
+\mu_{A \cup B}(n) = \max(\mu_A(n), \mu_B(n))
+$$
+
+El test utiliza los conjuntos `g1 = grande(1, 2)` y `g2 = grande(2, 3)`.
+
+| n | Resultado esperado | Cálculo |
+|:-:|:-:|:-:|
+| 0 | 0.0 | max(0, 0) |
+| 1 | 0.25 | max(0.25, 0.037) |
+| 2 | 0.444 | max(0.444, 0.125) |
+| 3 | 0.562 | max(0.562, 0.216) |
+| 10 | 0.826 | max(0.826, 0.751) |
+
+
+
+## 4. Función `interseccion`
+
+Comprueba la implementación de:
+
+$$
+\mu_{A \cap B}(n) = \min(\mu_A(n), \mu_B(n))
+$$
+
+| n | Resultado esperado | Cálculo |
+|:-:|:-:|:-:|
+| 0 | 0.0 | min(0, 0) |
+| 1 | 0.037 | min(0.25, 0.037) |
+| 2 | 0.125 | min(0.444, 0.125) |
+| 3 | 0.216 | min(0.562, 0.216) |
+| 20 | 0.751 | min(0.826, 0.751) |
+
+
+
+## 5. Función `inclusion`
+
+Evalúa el cumplimiento de la propiedad de inclusión difusa:
+
+$$
+A \subseteq B \iff \forall n,\ \mu_A(n) \le \mu_B(n)
+$$
+
+Casos evaluados:
+- `g1` **no** está incluido en `g2`.
+- `g2` **sí** está incluido en `g1`.
+- Un conjunto nulo (todo 0) siempre está incluido en cualquier otro.
+- Un conjunto total (todo 1) nunca está incluido en uno menor.
+
+---
+
+## 6. Función `igualdad`
+
+Verifica que dos conjuntos sean iguales si y solo si:
+
+$$
+A = B \iff \forall n,\ \mu_A(n) = \mu_B(n)
+$$
+
+Casos probados:
+- `g1` y `g3` (idénticos) → **iguales** 
+- `g1` y `g2` (distintos) → **no iguales** 
+- `zero` y `zero` → **iguales** 
+- `one` y `one` → **iguales** 
+- `zero` y `one` → **no iguales** 
+
+
+
+## Conclusión
+
+Los tests validan que cada operación difusa respeta las propiedades matemáticas de los conjuntos difusos:
+- Complemento → inverso al conjunto original.
+- Unión/Intersección → siguen las leyes de **máximo y mínimo**.
+- Inclusión e igualdad → coherentes con las definiciones de pertenencia.
+
+La implementación demuestra **consistencia y precisión numérica** con un margen de error menor a `10⁻⁶`.
